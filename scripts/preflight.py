@@ -3,7 +3,7 @@
 
 This does not replace GenVM Direct Mode. It makes the repository auditable even
 on a machine without the GenLayer runtime by checking Python syntax, expected
-contract surface, consensus boundaries, and deterministic canonicalization
+contract surface, consensus boundaries, and deterministic rule_graphicalization
 helpers through a minimal import stub.
 """
 
@@ -128,8 +128,8 @@ def _ast_checks(source: str) -> list[str]:
         "create_rulebook", "propose_rule", "set_blocked_rule_priority",
         "activate_blocked_rule", "repeal_rule", "restore_superseded_rule",
         "get_rulebook", "get_rule", "get_relation", "relation_between",
-        "get_canon", "blocking_reason", "is_consistent", "is_consistent_for",
-        "current_canon_hash",
+        "get_rule_graph", "blocking_reason", "is_consistent", "is_consistent_for",
+        "current_rule_graph_hash",
     }
 
     checks = []
@@ -147,14 +147,14 @@ def _ast_checks(source: str) -> list[str]:
     checks.append("semantic conflict detection separated from deterministic precedence")
     assert "MAX_RULES_PER_BOOK = 24" in source
     checks.append("pairwise consensus cost is explicitly bounded")
-    assert "canon_hash" in source and "is_consistent_for" in source
-    checks.append("cross-contract canon pinning surface present")
+    assert "rule_graph_hash" in source and "is_consistent_for" in source
+    checks.append("cross-contract rule_graph pinning surface present")
     return checks
 
 
 def _helper_checks(c) -> list[str]:
     checks = []
-    sem = c.canonical_semantics({
+    sem = c.rule_graphical_semantics({
         "atomic": True,
         "modality": "PROHIBIT",
         "actor": " treasury   operator ",
@@ -171,9 +171,9 @@ def _helper_checks(c) -> list[str]:
     assert sem["semantic_state"] == c.SEMANTIC_CLEAR
     assert len(sem["semantic_hash"]) == 64
     assert c.valid_semantics_shape(sem)
-    checks.append("clear atomic semantics canonicalize and hash")
+    checks.append("clear atomic semantics rule_graphicalize and hash")
 
-    ambiguous = c.canonical_semantics({
+    ambiguous = c.rule_graphical_semantics({
         "atomic": False,
         "modality": "REQUIRE",
         "actor": "council",
@@ -184,7 +184,7 @@ def _helper_checks(c) -> list[str]:
     assert ambiguous["ambiguity_reason"] == "NON_ATOMIC_OR_UNCLEAR"
     checks.append("non-atomic input fails closed to AMBIGUOUS")
 
-    rel = c.canonical_relation({
+    rel = c.rule_graphical_relation({
         "relation": "CONFLICT",
         "conflict_type": "MODAL",
         "overlap": " emergency   withdrawal ",
@@ -194,9 +194,9 @@ def _helper_checks(c) -> list[str]:
     assert rel["conflict_type"] == c.CONFLICT_MODAL
     assert rel["overlap"] == "emergency withdrawal"
     assert c.valid_relation_shape(rel)
-    checks.append("conflict relation canonicalizes into bounded enums")
+    checks.append("conflict relation rule_graphicalizes into bounded enums")
 
-    nonconflict = c.canonical_relation({
+    nonconflict = c.rule_graphical_relation({
         "relation": "COMPATIBLE",
         "conflict_type": "MODAL",
         "overlap": "same domain",

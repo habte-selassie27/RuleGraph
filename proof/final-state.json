@@ -1,17 +1,53 @@
 {
-  "source_commit": "bd6682d81afa7063d6b595dcdab04d220aed8bbb",
-  "contract_address": "0x67a027446838296FcB3022B376c8ff3873a4566C",
+  "historical": true,
+  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
   "rulebook_id": 1,
+  "rule_count": 5,
   "active_count": 2,
   "blocked_count": 0,
+  "relation_count": 10,
+  "revision": 11,
   "resolved_conflicts": 1,
   "unresolved_conflicts": 0,
-  "canon_status": "RESOLVED_CONFLICTS",
-  "canon_version": 2,
-  "canon_hash": "8b3e00983548ade2b9a799cf960a7b47639def3eb535fa6e4c17649b2e285438",
+  "ambiguous_relations": 0,
+  "rule_graph_status": "RESOLVED_CONFLICTS",
+  "rule_graph_version": 2,
+  "rule_graph_hash": "3cb1e710938e267223b14d142cab63f087629ad0dcab231cb8c9916688441e27",
+  "consistent": true,
+  "has_conflicts": true,
+  "has_resolved_conflicts": true,
+  "strict_mode": true,
   "exact_pin": true,
   "stale_pin": false,
   "relation_id": 1,
   "relation_kind": "CONFLICT",
-  "resolution": "RIGHT_PREVAILS"
+  "conflict_type": "EXCEPTION",
+  "reason_code": "EXCEPTION_OVERRIDE",
+  "resolution": "RIGHT_PREVAILS",
+  "left_rule_id": 1,
+  "right_rule_id": 2,
+  "active_rules": [
+    {
+      "rule_id": 1,
+      "status": "ACTIVE",
+      "priority": 100,
+      "activated_version": 1
+    },
+    {
+      "rule_id": 2,
+      "status": "ACTIVE",
+      "priority": 200,
+      "activated_version": 2
+    }
+  ],
+  "repealed_rule_ids": [
+    3,
+    4,
+    5
+  ],
+  "blocking_reason_rule_2": "",
+  "notes": "Rules 3-5 were retry-storm duplicates and were repealed. Relation 1 is the sole rule_graph conflict edge, resolved RIGHT_PREVAILS by priority 200 > 100."
 }

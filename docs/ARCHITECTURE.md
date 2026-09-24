@@ -4,7 +4,7 @@
 
 Rule_Graph is designed as a reusable semantic-consistency primitive, not as a policy application.
 
-The contract owns a versioned graph in which rule text, semantic interpretation, pairwise relations, deterministic precedence, lifecycle status, and consumer-facing canon hashes are all explicit on-chain state.
+The contract owns a versioned graph in which rule text, semantic interpretation, pairwise relations, deterministic precedence, lifecycle status, and consumer-facing rule_graph hashes are all explicit on-chain state.
 
 ## Layer separation
 
@@ -23,11 +23,11 @@ GenLayer consensus handles two questions that ordinary deterministic code cannot
 1. What atomic norm does this text express?
 2. What is the semantic relationship between two rule nodes?
 
-Those answers are bounded into enums and short canonical fields before storage.
+Those answers are bounded into enums and short rule_graphical fields before storage.
 
 ### Layer 3: deterministic governance mechanics
 
-Priority, admission, versioning, supersession, repeal, restoration, counts, consistency, and canon hashing are deterministic.
+Priority, admission, versioning, supersession, repeal, restoration, counts, consistency, and rule_graph hashing are deterministic.
 
 This keeps normative authority outside the model.
 
@@ -37,7 +37,7 @@ This keeps normative authority outside the model.
 create_rulebook
       |
       v
- empty canon
+ empty rule_graph
       |
       v
  propose_rule
@@ -73,25 +73,25 @@ Rule_Graph avoids that gap by comparing each candidate against every currently l
 
 That invariant allows deterministic later activation without rerunning old semantic interpretation.
 
-## Strict versus permissive canon
+## Strict versus permissive rule_graph
 
-Strict mode is appropriate when downstream systems want a fail-closed rule set. Unresolved semantic relationships cannot enter active canon.
+Strict mode is appropriate when downstream systems want a fail-closed rule set. Unresolved semantic relationships cannot enter active rule_graph.
 
 Permissive mode is useful for drafting, research, and governance processes that want unresolved conflicts to remain visible in active state.
 
-The mode is immutable per rulebook so consumers know the admission policy that produced the canon hash.
+The mode is immutable per rulebook so consumers know the admission policy that produced the rule_graph hash.
 
-## Canon version versus revision
+## Rule_Graph version versus revision
 
 `revision` tracks every persisted governance change, including blocked proposals and blocked-rule priority changes.
 
-`canon_version` changes only when active canonical state changes.
+`rule_graph_version` changes only when active rule_graphical state changes.
 
 This distinction prevents a rejected proposal from falsely appearing as a new constitution version while still preserving complete rulebook history.
 
-## Canon hash contents
+## Rule_Graph hash contents
 
-The hash includes active rules and active-active relation edges. Blocked, repealed, and superseded nodes remain queryable but do not alter current canon.
+The hash includes active rules and active-active relation edges. Blocked, repealed, and superseded nodes remain queryable but do not alter current rule_graph.
 
 This allows a consumer to pin exactly the rule system it depended upon.
 

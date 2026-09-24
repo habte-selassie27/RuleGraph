@@ -12,7 +12,7 @@ The leader derives a bounded result. The validator independently derives the mat
 
 ### Leader task
 
-The leader receives immutable rulebook purpose and immutable candidate rule text, then proposes one canonical semantic object:
+The leader receives immutable rulebook purpose and immutable candidate rule text, then proposes one rule_graphical semantic object:
 
 ```json
 {
@@ -27,7 +27,7 @@ The leader receives immutable rulebook purpose and immutable candidate rule text
 }
 ```
 
-### Deterministic canonicalization
+### Deterministic rule_graphicalization
 
 Before storage, the result is converted to bounded enums and strings.
 
@@ -55,7 +55,7 @@ A conflict requires a plausible shared case in which both rules apply but cannot
 
 ### Validator task
 
-The validator independently classifies the relationship from both original rule texts, both accepted semantic records, and the rulebook purpose. Consensus compares the authoritative relation kind only. `conflict_type`, `overlap`, and `reason_code` are explanatory metadata; they remain available in public relation views but are not used for admission, precedence, lifecycle, or `canon_hash`. A validator-derived `AMBIGUOUS` result fails closed against any confident leader classification; the leader must also be ambiguous for that edge to pass.
+The validator independently classifies the relationship from both original rule texts, both accepted semantic records, and the rulebook purpose. Consensus compares the authoritative relation kind only. `conflict_type`, `overlap`, and `reason_code` are explanatory metadata; they remain available in public relation views but are not used for admission, precedence, lifecycle, or `rule_graph_hash`. A validator-derived `AMBIGUOUS` result fails closed against any confident leader classification; the leader must also be ambiguous for that edge to pass.
 
 ## Precedence is not consensus output
 
@@ -77,4 +77,4 @@ Rule_Graph still treats prompt injection as a model-layer risk, which is why out
 
 If validators reject a leader result, the transaction does not safely finalize with that semantic state.
 
-The contract does not silently coerce rejected or malformed outputs into active canon.
+The contract does not silently coerce rejected or malformed outputs into active rule_graph.

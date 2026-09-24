@@ -66,4 +66,4 @@ A treasury withdrawal must not execute when fewer than four approvals are presen
 supersedes_rule_id: rule_1
 ```
 
-If the relation is a plausible replacement and the node has no unresolved blockers, Rule_Graph activates it and marks Rule 1 `SUPERSEDED` atomically, preserving historical canon.
+If the relation is a plausible replacement and the node has no unresolved blockers, Rule_Graph activates it and marks Rule 1 `SUPERSEDED` atomically, preserving historical rule_graph.

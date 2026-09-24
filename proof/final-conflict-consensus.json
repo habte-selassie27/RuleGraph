@@ -1,17 +1,32 @@
 {
-  "source_commit": "bd6682d81afa7063d6b595dcdab04d220aed8bbb",
-  "contract_address": "0x67a027446838296FcB3022B376c8ff3873a4566C",
-  "tx_hash": "0x79ffc24bc6f70a2ca1b271851e245c5571586395d8b0e402a369de010b930340",
+  "historical": true,
+  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "tx_hash": "0xf6ab8cfa8e984d1c28a8b54977a495d7372e9649b7a8fe28e064a624705a5d9b",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
   "execution": "SUCCESS",
-  "rounds": 1,
-  "votes_observed": {"agree": 3, "idle": 2},
+  "rounds": 4,
+  "votes_observed": {
+    "agree": 3,
+    "disagree": 0,
+    "idle": 2
+  },
   "rule_id": 2,
   "semantic_state": "CLEAR",
   "status_name": "BLOCKED",
+  "priority_at_proposal": 100,
+  "modality": "PERMIT",
   "relation_id": 1,
   "relation_kind": "CONFLICT",
   "initial_resolution": "UNRESOLVED",
-  "conflict_type": "MODAL"
+  "conflict_type": "EXCEPTION",
+  "reason_code": "EXCEPTION_OVERRIDE",
+  "blocking_reason": "UNRESOLVED_CONFLICT",
+  "left_rule_id": 1,
+  "right_rule_id": 2,
+  "text": "During an active exploit the security council may execute a withdrawal without three approvals.",
+  "semantic_hash": "633e71baab7307a714755d2d9134022df91e82684c0112f7f48ba24e66c0858e"
 }

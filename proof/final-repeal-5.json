@@ -4,14 +4,18 @@
   "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
   "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
   "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
-  "tx_hash": "0xf6ab8cfa8e984d1c28a8b54977a495d7372e9649b7a8fe28e064a624705a5d9b",
+  "tx_hash": "0x87e3a27cec1ef4ea85b79ab5d8e5b1cd0fb66622c993920c3ecc453684592225",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
-  "rounds": 4,
+  "execution": "SUCCESS",
+  "rounds": 1,
   "votes_observed": {
-    "agree": 3,
+    "agree": 5,
     "disagree": 0,
-    "idle": 2
+    "idle": 0
   },
-  "note": "Rule 2 proposed at equal priority 100; strict mode blocked UNRESOLVED_CONFLICT on relation 1."
+  "rule_id": 5,
+  "status_name": "REPEALED",
+  "propose_tx": "0xebc2a09eb896e493b5dccac7f1b8864fd69697db404e8bcb17e85705ed1ee628",
+  "note": "Duplicate emergency rule from write retry storm; repealed."
 }

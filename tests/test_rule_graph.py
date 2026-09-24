@@ -99,16 +99,16 @@ def test_create_rulebook(direct_deploy):
     book = contract.get_rulebook(book_id)
     assert book["name"] == "Treasury Constitution"
     assert book["strict_mode"] is True
-    assert book["canon_version"] == 0
+    assert book["rule_graph_version"] == 0
     assert book["consistent"] is True
-    assert len(book["canon_hash"]) == 64
+    assert len(book["rule_graph_hash"]) == 64
 
 
-def test_only_owner_can_modify_canon(direct_vm, direct_deploy, direct_alice):
+def test_only_owner_can_modify_rule_graph(direct_vm, direct_deploy, direct_alice):
     contract, book_id = deploy_book(direct_deploy)
     direct_vm.mock_llm(r"RULEGRAPH / NORMALIZE RULE", clear_prohibit_semantics())
     with direct_vm.prank(direct_alice):
-        with direct_vm.expect_revert("only the rulebook owner may modify canon"):
+        with direct_vm.expect_revert("only the rulebook owner may modify rule_graph"):
             contract.propose_rule(book_id, "Withdrawals without three approvals are prohibited.", 100, 0)
 
 
@@ -122,7 +122,7 @@ def test_clear_first_rule_becomes_active(direct_vm, direct_deploy):
     assert rule["modality_name"] == "PROHIBIT"
     assert book["active_count"] == 1
     assert book["blocked_count"] == 0
-    assert book["canon_version"] == 1
+    assert book["rule_graph_version"] == 1
     assert book["consistent"] is True
 
 
@@ -138,10 +138,10 @@ def test_non_atomic_rule_is_blocked(direct_vm, direct_deploy):
     rule = contract.get_rule(rule_id)
     assert rule["status_name"] == "BLOCKED"
     assert contract.blocking_reason(rule_id) == "SEMANTIC_AMBIGUITY"
-    assert contract.get_rulebook(book_id)["canon_version"] == 0
+    assert contract.get_rulebook(book_id)["rule_graph_version"] == 0
 
 
-def test_compatible_rule_extends_canon(direct_vm, direct_deploy):
+def test_compatible_rule_extends_rule_graph(direct_vm, direct_deploy):
     contract, book_id = deploy_book(direct_deploy)
     first = propose_first(direct_vm, contract, book_id)
     direct_vm.clear_mocks()
@@ -218,7 +218,7 @@ def test_blocked_rule_can_change_priority_then_activate(direct_vm, direct_deploy
     assert contract.relation_between(first, second)["resolution_name"] == "RIGHT_PREVAILS"
     contract.activate_blocked_rule(second)
     assert contract.get_rule(second)["status_name"] == "ACTIVE"
-    assert contract.get_rulebook(book_id)["canon_version"] == 2
+    assert contract.get_rulebook(book_id)["rule_graph_version"] == 2
 
 
 def test_priority_of_active_rule_is_immutable(direct_vm, direct_deploy):
@@ -266,27 +266,27 @@ def test_unrelated_declared_supersession_is_blocked(direct_vm, direct_deploy):
     assert contract.get_rule(first)["status_name"] == "ACTIVE"
 
 
-def test_repeal_changes_canon_hash_and_version(direct_vm, direct_deploy):
+def test_repeal_changes_rule_graph_hash_and_version(direct_vm, direct_deploy):
     contract, book_id = deploy_book(direct_deploy)
     rule_id = propose_first(direct_vm, contract, book_id)
     before = contract.get_rulebook(book_id)
     contract.repeal_rule(rule_id)
     after = contract.get_rulebook(book_id)
     assert contract.get_rule(rule_id)["status_name"] == "REPEALED"
-    assert after["canon_version"] == before["canon_version"] + 1
-    assert after["canon_hash"] != before["canon_hash"]
+    assert after["rule_graph_version"] == before["rule_graph_version"] + 1
+    assert after["rule_graph_hash"] != before["rule_graph_hash"]
     assert after["active_count"] == 0
 
 
-def test_consumer_can_pin_exact_consistent_canon(direct_vm, direct_deploy):
+def test_consumer_can_pin_exact_consistent_rule_graph(direct_vm, direct_deploy):
     contract, book_id = deploy_book(direct_deploy)
     propose_first(direct_vm, contract, book_id)
-    digest = contract.current_canon_hash(book_id)
+    digest = contract.current_rule_graph_hash(book_id)
     assert contract.is_consistent_for(book_id, digest) is True
     assert contract.is_consistent_for(book_id, "0" * 64) is False
 
 
-def test_permissive_book_can_expose_unresolved_canon(direct_vm, direct_deploy):
+def test_permissive_book_can_expose_unresolved_rule_graph(direct_vm, direct_deploy):
     contract = direct_deploy("contracts/rule_graph.py")
     book_id = contract.create_rulebook("Research Rules", PURPOSE, False)
     first = propose_first(direct_vm, contract, book_id, priority=100)
@@ -307,15 +307,15 @@ def test_permissive_book_can_expose_unresolved_canon(direct_vm, direct_deploy):
     assert contract.relation_between(first, second)["resolution_name"] == "UNRESOLVED"
 
 
-def test_canon_view_excludes_blocked_rules(direct_vm, direct_deploy):
+def test_rule_graph_view_excludes_blocked_rules(direct_vm, direct_deploy):
     contract, book_id = deploy_book(direct_deploy)
     first = propose_first(direct_vm, contract, book_id)
     direct_vm.clear_mocks()
     direct_vm.mock_llm(r"RULEGRAPH / NORMALIZE RULE", ambiguous_semantics())
     direct_vm.mock_llm(r"RULEGRAPH / CLASSIFY RULE RELATION", relation("AMBIGUOUS", reason="UNCLEAR_OVERLAP"))
     second = contract.propose_rule(book_id, "The council should do what is necessary and report later.", 100, 0)
-    canon = contract.get_canon(book_id)
-    assert [item["rule_id"] for item in canon] == [first]
+    rule_graph = contract.get_rule_graph(book_id)
+    assert [item["rule_id"] for item in rule_graph] == [first]
     assert contract.get_rule(second)["status_name"] == "BLOCKED"
 
 
@@ -443,14 +443,14 @@ def test_nested_supersession_repeal_restore_preserves_lineage_and_rejects_cycle(
     assert contract.get_rule(first)["status_name"] == "SUPERSEDED"
     assert contract.get_rule(second)["status_name"] == "SUPERSEDED"
     assert contract.get_rule(third)["status_name"] == "ACTIVE"
-    before_repeal = contract.get_rulebook(book_id)["canon_version"]
+    before_repeal = contract.get_rulebook(book_id)["rule_graph_version"]
 
     contract.repeal_rule(third)
     contract.restore_superseded_rule(second)
     assert contract.get_rule(second)["status_name"] == "ACTIVE"
     assert contract.get_rule(first)["status_name"] == "SUPERSEDED"
     assert contract.get_rule(third)["status_name"] == "REPEALED"
-    assert contract.get_rulebook(book_id)["canon_version"] == before_repeal + 2
+    assert contract.get_rulebook(book_id)["rule_graph_version"] == before_repeal + 2
 
     with direct_vm.expect_revert("replacement is still active"):
         contract.restore_superseded_rule(first)
@@ -498,14 +498,14 @@ def test_relation_lookup_is_symmetric(direct_vm, direct_deploy):
 def test_stale_or_inconsistent_consumer_pin_fails_closed(direct_vm, direct_deploy):
     contract, book_id = deploy_book(direct_deploy)
     first = propose_first(direct_vm, contract, book_id)
-    pinned = contract.current_canon_hash(book_id)
+    pinned = contract.current_rule_graph_hash(book_id)
     assert contract.is_consistent_for(book_id, pinned) is True
 
     direct_vm.mock_llm(r"RULEGRAPH / NORMALIZE RULE", ambiguous_semantics())
     direct_vm.mock_llm(r"RULEGRAPH / CLASSIFY RULE", relation("AMBIGUOUS", reason="UNCLEAR_OVERLAP"))
-    before_blocked = contract.current_canon_hash(book_id)
+    before_blocked = contract.current_rule_graph_hash(book_id)
     contract.propose_rule(book_id, "Do what seems appropriate.", 100, 0)
-    assert contract.current_canon_hash(book_id) == before_blocked
+    assert contract.current_rule_graph_hash(book_id) == before_blocked
     assert contract.is_consistent_for(book_id, pinned) is True
 
     contract.repeal_rule(first)
@@ -513,10 +513,10 @@ def test_stale_or_inconsistent_consumer_pin_fails_closed(direct_vm, direct_deplo
     assert contract.is_consistent_for(book_id, "0" * 64) is False
 
 
-def test_canon_hash_includes_strict_mode(direct_vm, direct_deploy):
+def test_rule_graph_hash_includes_strict_mode(direct_vm, direct_deploy):
     strict, strict_id = deploy_book(direct_deploy)
     propose_first(direct_vm, strict, strict_id)
-    strict_hash = strict.current_canon_hash(strict_id)
+    strict_hash = strict.current_rule_graph_hash(strict_id)
     assert strict.get_rulebook(strict_id)["strict_mode"] is True
     assert len(strict_hash) == 64
     assert '"strict_mode": bool(book.strict_mode)' in CONTRACT_SOURCE
@@ -524,16 +524,16 @@ def test_canon_hash_includes_strict_mode(direct_vm, direct_deploy):
     assert '"supersedes_rule_id": int(rule.supersedes_rule_id)' in CONTRACT_SOURCE
 
 
-def test_canon_hash_changes_when_relation_resolution_changes(direct_vm, direct_deploy):
+def test_rule_graph_hash_changes_when_relation_resolution_changes(direct_vm, direct_deploy):
     contract, book_id = deploy_book(direct_deploy)
     first = propose_first(direct_vm, contract, book_id, priority=100)
-    before = contract.current_canon_hash(book_id)
+    before = contract.current_rule_graph_hash(book_id)
     direct_vm.clear_mocks()
     direct_vm.mock_llm(r"RULEGRAPH / NORMALIZE RULE", clear_permit_semantics())
     direct_vm.mock_llm(r"RULEGRAPH / CLASSIFY RULE", relation("CONFLICT", "MODAL", "OTHER_REASON", "different wording"))
     second = contract.propose_rule(book_id, "An emergency withdrawal may bypass approval.", 200, 0)
     assert contract.relation_between(first, second)["resolution_name"] == "RIGHT_PREVAILS"
-    assert contract.current_canon_hash(book_id) != before
+    assert contract.current_rule_graph_hash(book_id) != before
 
 
 def test_resolved_conflict_is_explicit_in_consumer_views(direct_vm, direct_deploy):
@@ -548,9 +548,9 @@ def test_resolved_conflict_is_explicit_in_consumer_views(direct_vm, direct_deplo
     assert book["has_conflicts"] is True
     assert book["has_resolved_conflicts"] is True
     assert book["resolved_conflicts"] == 1
-    assert book["canon_status"] == "RESOLVED_CONFLICTS"
-    assert contract.canon_status(book_id)["status"] == "RESOLVED_CONFLICTS"
-    relations = contract.get_canon_relations(book_id)
+    assert book["rule_graph_status"] == "RESOLVED_CONFLICTS"
+    assert contract.rule_graph_status(book_id)["status"] == "RESOLVED_CONFLICTS"
+    relations = contract.get_rule_graph_relations(book_id)
     assert [(item["left_rule_id"], item["right_rule_id"]) for item in relations] == [(first, second)]
     assert relations[0]["resolution_name"] == "RIGHT_PREVAILS"
 
@@ -742,10 +742,10 @@ def test_normalization_validator_allows_equivalent_wording(direct_vm, direct_dep
     assert direct_vm.run_validator() is True
 
 
-def test_canon_hash_excludes_explanatory_conflict_subtype(direct_deploy):
-    canon_section = CONTRACT_SOURCE[CONTRACT_SOURCE.index("canon_payload = {"):CONTRACT_SOURCE.index("book.canon_hash", CONTRACT_SOURCE.index("canon_payload = {"))]
-    assert '"conflict_type"' not in canon_section
-    assert '"reason_code"' not in canon_section
+def test_rule_graph_hash_excludes_explanatory_conflict_subtype(direct_deploy):
+    rule_graph_section = CONTRACT_SOURCE[CONTRACT_SOURCE.index("rule_graph_payload = {"):CONTRACT_SOURCE.index("book.rule_graph_hash", CONTRACT_SOURCE.index("rule_graph_payload = {"))]
+    assert '"conflict_type"' not in rule_graph_section
+    assert '"reason_code"' not in rule_graph_section
 
 
 def test_malicious_relation_leader_is_rejected_behaviorally(direct_vm, direct_deploy):

@@ -2,7 +2,7 @@
 
 ## Protected assets
 
-Rule_Graph protects the integrity of immutable rule text, normalized semantic meaning, the pairwise conflict graph, explicit precedence, lifecycle history, canonical consistency state, and downstream `canon_hash` pins.
+Rule_Graph protects the integrity of immutable rule text, normalized semantic meaning, the pairwise conflict graph, explicit precedence, lifecycle history, rule_graphical consistency state, and downstream `rule_graph_hash` pins.
 
 ## Threat: anchoring on a leader candidate
 
@@ -34,9 +34,9 @@ Residual limitation: consensus quality still depends on validator availability a
 
 ## Threat: malformed model output
 
-Consequence: non-dict, missing-field, unknown-enum, oversized, or malformed relation output could corrupt canonical state.
+Consequence: non-dict, missing-field, unknown-enum, oversized, or malformed relation output could corrupt rule_graphical state.
 
-Mitigation: canonicalization maps malformed semantics to `AMBIGUOUS`, rejects oversized semantic fields, and maps invalid relation subtypes to an ambiguous edge. Strict mode blocks these states; validators reject invalid shapes.
+Mitigation: rule_graphicalization maps malformed semantics to `AMBIGUOUS`, rejects oversized semantic fields, and maps invalid relation subtypes to an ambiguous edge. Strict mode blocks these states; validators reject invalid shapes.
 
 Residual limitation: permissive rulebooks can intentionally retain ambiguous draft state, so consumers must use structured status and fail closed.
 
@@ -44,7 +44,7 @@ Residual limitation: permissive rulebooks can intentionally retain ambiguous dra
 
 Mitigation: relation prompts are explicitly forbidden from using priority. Precedence is computed deterministically from stored priority and declared supersession.
 
-## Threat: ambiguous prose enters strict canon
+## Threat: ambiguous prose enters strict rule_graph
 
 Mitigation: non-atomic or semantically incomplete rules fail closed to `AMBIGUOUS`, which blocks activation. Ambiguous pairwise relations also block admission in strict mode.
 
@@ -68,15 +68,15 @@ Residual limitation: historical repealed rules are excluded because Rule_Graph h
 
 Mitigation: supersession is not accepted blindly. Rule_Graph checks the semantic edge between replacement and target. `UNRELATED` or `AMBIGUOUS` replacement relations block activation.
 
-## Threat: unresolved canon consumed as authoritative
+## Threat: unresolved rule_graph consumed as authoritative
 
-Mitigation: consumers can call `is_consistent` or `is_consistent_for`, then inspect `canon_status` and `get_canon_relations`. `RESOLVED_CONFLICTS` is explicitly distinct from `COHERENT`; `UNRESOLVED` and `AMBIGUOUS` remain fail-closed states.
+Mitigation: consumers can call `is_consistent` or `is_consistent_for`, then inspect `rule_graph_status` and `get_rule_graph_relations`. `RESOLVED_CONFLICTS` is explicitly distinct from `COHERENT`; `UNRESOLVED` and `AMBIGUOUS` remain fail-closed states.
 
 ## Threat: model-generated metadata controls authority
 
 Consequence: a reason string, overlap description, or prose claim such as “priority 1000” changes precedence.
 
-Mitigation: metadata is explanatory only. Authority uses bounded stored priority and supersession fields; relation kind, lifecycle, and resolution are bounded protocol facts. Conflict subtype is retained for human-readable context but does not affect canon admission, precedence, lifecycle, or hashing.
+Mitigation: metadata is explanatory only. Authority uses bounded stored priority and supersession fields; relation kind, lifecycle, and resolution are bounded protocol facts. Conflict subtype is retained for human-readable context but does not affect rule_graph admission, precedence, lifecycle, or hashing.
 
 Residual limitation: explanatory metadata can still mislead human readers if they ignore the bounded fields.
 

@@ -1,14 +1,24 @@
 {
-  "source_commit": "bd6682d81afa7063d6b595dcdab04d220aed8bbb",
-  "contract_address": "0x67a027446838296FcB3022B376c8ff3873a4566C",
-  "tx_hash": "0x8becc751189a7074526264ef92f770be35c9cd7e03e52fa518e4f9468701477d",
+  "historical": true,
+  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "tx_hash": "0x7e17fcce3aab9305ccbc2ed267ef038f894141906c23d17df63da2f6dd1bd051",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
   "execution": "SUCCESS",
   "rounds": 1,
-  "votes_observed": {"agree": 3, "idle": 2},
+  "votes_observed": {
+    "agree": 4,
+    "disagree": 0,
+    "idle": 1
+  },
   "rule_id": 2,
   "status_name": "ACTIVE",
   "activated_version": 2,
-  "semantic_consensus_reused": true
+  "semantic_consensus_reused": true,
+  "priority": 200,
+  "premature_attempt_tx": "0x9a1ecd210bc7d8ae62a5f5e336e302340098bf8f82732267b68464d786dbcb85",
+  "premature_attempt_note": "First activate ran before priority receipt landed; rolled back EXPECTED: cannot activate: UNRESOLVED_CONFLICT with no state change."
 }

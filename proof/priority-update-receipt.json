@@ -1,12 +1,19 @@
 {
-  "contract_address": "0x44fB5C44bfB81c2790AC14ab8b4167e25943eCAA",
-  "historical_deployment": true,
-  "rulebook_id": 2,
-  "rule_id": 4,
-  "tx": "0x4429817be6d9c0c348f8674e7dc395f17e65ec7f50636ae2242198450a268252",
-  "method": "set_blocked_rule_priority",
+  "historical": true,
+  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "tx_hash": "0x5ecf8b6c86899366cd6184882a771378e4511c4735c455f59e5fa23116b0fd38",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
-  "priority_after": 200,
-  "same_relation_after": "CONFLICT / RIGHT_PREVAILS"
+  "execution": "SUCCESS",
+  "rounds": 1,
+  "votes_observed": {
+    "agree": 5,
+    "disagree": 0,
+    "idle": 0
+  },
+  "rule_id": 2,
+  "priority": 200
 }

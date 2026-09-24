@@ -1,16 +1,20 @@
 {
-  "contract_address": "0x44fB5C44bfB81c2790AC14ab8b4167e25943eCAA",
-  "historical_deployment": true,
-  "rulebook_id": 2,
-  "tx": "0xbc95c28953b85e00447979bd0aa1b6a105f9c997c62b8a01988382bd0bb9d5e0",
-  "method": "create_rulebook",
+  "historical": true,
+  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "tx_hash": "0x378b2be1b204883998e3a7a515419bfd65d499ce7fd69dce404f9637d9577747",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
-  "strict_mode": true,
-  "state_after": {
-    "revision": 1,
-    "canon_version": 0,
-    "canon_status": "COHERENT",
-    "consistent": true
-  }
+  "execution": "SUCCESS",
+  "rounds": 1,
+  "votes_observed": {
+    "agree": 3,
+    "disagree": 0,
+    "idle": 2
+  },
+  "rulebook_id": 1,
+  "name": "Treasury Constitution",
+  "strict_mode": true
 }

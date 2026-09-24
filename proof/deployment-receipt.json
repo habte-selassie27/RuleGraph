@@ -1,13 +1,13 @@
 {
-  "source_commit": "bd6682d81afa7063d6b595dcdab04d220aed8bbb",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
   "network": "GenLayer StudioNet",
-  "cli_version": "0.39.1",
-  "deployer": "0xA7EeAE0E93793e3146Cb14b0700251B8b0EBADFB",
-  "contract_address": "0x67a027446838296FcB3022B376c8ff3873a4566C",
-  "deployment_tx": "0xacfed35041fae0ca9224ab07034838145f51c2f112809e8b968814be5584a2f2",
+  "cli_version": "0.39.2",
+  "deployer": "0x04e0353B7218b66D6803725ce7342E6e1225DB1b",
+  "deployment_tx": "0xcdbfed2a17b5744b2600ffcd76bc44b18bff449038c08cd5d7e59f5ccfe53796",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
   "execution_stdout": "",
   "execution_stderr": "",
-  "notes": "Sanitized from observed GenLayer CLI output; independent public RPC status was 0x1 and contractAddress was null in this receipt format."
+  "notes": "Sanitized from observed GenLayer CLI output; independent public RPC may report contractAddress null in GenLayer receipt format."
 }

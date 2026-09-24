@@ -14,16 +14,17 @@ Instead of repeatedly asking an LLM, "is this policy okay?", Rule_Graph maintain
 - consensus-normalized semantics for each node;
 - consensus-backed pairwise semantic relations;
 - deterministic precedence for conflicting rules;
-- strict and permissive canon modes;
+- strict and permissive rule_graph modes;
 - blocked-rule recovery without reinterpreting old semantics;
 - explicit supersession and repeal lineage;
-- canonical versioning and a deterministic canon hash;
+- rule_graphical versioning and a deterministic rule_graph hash;
 - a typed cross-contract interface for downstream consumers.
 
 The result is not a one-shot AI verdict. It is a living, versioned rule graph whose usefulness increases as more rules are added.
 
-Current hardened StudioNet deployment: `0x67a027446838296FcB3022B376c8ff3873a4566C`,
-deployed from source commit `bd6682d81afa7063d6b595dcdab04d220aed8bbb`. See the [deployment and sanitized proof records](DEPLOYMENT.md).
+Current official StudioNet deployment: [`0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757`](https://explorer-studio.genlayer.com/address/0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757),
+[Open in Studio](https://studio.genlayer.com/?import-contract=0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757),
+deployed from source commit `60aa7005d4d38a19994629e297eccdde9c969c92`. See the [deployment and sanitized proof records](DEPLOYMENT.md); current lifecycle evidence is tracked separately from historical evidence.
 
 ## Why this primitive exists
 
@@ -57,7 +58,7 @@ Rule_Graph does **not** ask an LLM which rule wins.
 
 If both rules have equal priority, a strict rulebook blocks the new rule as an unresolved conflict.
 
-If governance deliberately assigns the emergency rule a higher priority, deterministic state resolves the edge as `RIGHT_PREVAILS` and the canon can remain consistent.
+If governance deliberately assigns the emergency rule a higher priority, deterministic state resolves the edge as `RIGHT_PREVAILS` and the rule_graph can remain consistent.
 
 That distinction prevents an AI model from silently manufacturing constitutional hierarchy.
 
@@ -65,13 +66,13 @@ That distinction prevents an AI model from silently manufacturing constitutional
 
 ### Rulebook
 
-A rulebook stores owner, name/purpose, strict mode, revision, canon version, rule/relation IDs, counts, consistency, and a deterministic `canon_hash`.
+A rulebook stores owner, name/purpose, strict mode, revision, rule_graph version, rule/relation IDs, counts, consistency, and a deterministic `rule_graph_hash`.
 
 ### Rule
 
 Each rule stores immutable source text/hash, normalized modality, actor, action, object, condition, exception, scope, semantic clarity, semantic hash, priority, lifecycle status, version metadata, supersession lineage, and relation IDs.
 
-A rule must represent one atomic normative proposition. Multi-clause or materially unclear text fails closed to `AMBIGUOUS` and cannot enter active canon.
+A rule must represent one atomic normative proposition. Multi-clause or materially unclear text fails closed to `AMBIGUOUS` and cannot enter active rule_graph.
 
 ### Relation
 
@@ -130,11 +131,11 @@ The LLM never chooses the winner.
 
 In strict mode a candidate is blocked when its semantics are ambiguous, an active pairwise relation is ambiguous, a conflict has no deterministic precedence, or declared supersession is unrelated/ambiguous.
 
-Blocked rules stay in history and in the graph but do not enter canonical active state.
+Blocked rules stay in history and in the graph but do not enter rule_graphical active state.
 
 ### Permissive mode
 
-A permissive rulebook may admit a rule with unresolved conflict. The active canon then exposes `consistent = false` and the exact unresolved edges remain queryable. A resolved conflict is different: `consistent = true`, `has_conflicts = true`, and `canon_status = RESOLVED_CONFLICTS`.
+A permissive rulebook may admit a rule with unresolved conflict. The active rule_graph then exposes `consistent = false` and the exact unresolved edges remain queryable. A resolved conflict is different: `consistent = true`, `has_conflicts = true`, and `rule_graph_status = RESOLVED_CONFLICTS`.
 
 ### Blocked-rule recovery
 
@@ -142,11 +143,11 @@ A blocked rule can change **priority only**. Its text and semantic interpretatio
 
 ### Supersession, repeal, restoration
 
-Amendments are new immutable nodes. A declared replacement is semantically checked against its target before activation. Repeal never deletes history. A superseded rule can only be restored after its replacement becomes inactive and the graph shows it can safely re-enter canon. Superseded nodes remain eligible for future pairwise comparison, so later rules cannot create a restoration-time missing edge. Restoration also checks blocked relations, preventing a known unresolved edge from being bypassed.
+Amendments are new immutable nodes. A declared replacement is semantically checked against its target before activation. Repeal never deletes history. A superseded rule can only be restored after its replacement becomes inactive and the graph shows it can safely re-enter rule_graph. Superseded nodes remain eligible for future pairwise comparison, so later rules cannot create a restoration-time missing edge. Restoration also checks blocked relations, preventing a known unresolved edge from being bypassed.
 
-## Canon hash
+## Rule_Graph hash
 
-The `canon_hash` commits to active rules and active-active relation structure, including rule IDs, text hashes, semantic hashes, priorities, supersession targets, relation kinds, conflict subtypes, resolutions, and strict/permissive mode.
+The `rule_graph_hash` commits to active rules and active-active relation structure, including rule IDs, text hashes, semantic hashes, priorities, supersession targets, relation kinds, conflict subtypes, resolutions, and strict/permissive mode.
 
 Downstream contracts can pin an exact coherent constitution:
 
@@ -154,7 +155,7 @@ Downstream contracts can pin an exact coherent constitution:
 @gl.contract_interface
 class IRule_Graph:
     class View:
-        def is_consistent_for(self, rulebook_id: u256, expected_canon_hash: str) -> bool: ...
+        def is_consistent_for(self, rulebook_id: u256, expected_rule_graph_hash: str) -> bool: ...
 ```
 
 A consumer can fail closed if the rulebook changed or became inconsistent.
@@ -176,13 +177,13 @@ Views:
 - `get_rule(rule_id)`
 - `get_relation(relation_id)`
 - `relation_between(left_rule_id, right_rule_id)`
-- `get_canon(rulebook_id)`
-- `get_canon_relations(rulebook_id)`
-- `canon_status(rulebook_id)`
+- `get_rule_graph(rulebook_id)`
+- `get_rule_graph_relations(rulebook_id)`
+- `rule_graph_status(rulebook_id)`
 - `blocking_reason(rule_id)`
 - `is_consistent(rulebook_id)`
-- `is_consistent_for(rulebook_id, expected_canon_hash)`
-- `current_canon_hash(rulebook_id)`
+- `is_consistent_for(rulebook_id, expected_rule_graph_hash)`
+- `current_rule_graph_hash(rulebook_id)`
 
 ## Cross-contract use cases
 
@@ -199,13 +200,13 @@ The model cannot directly mutate arbitrary state and cannot choose precedence. T
 3. consensus-normalize the rule;
 4. consensus-create pairwise semantic edges;
 5. deterministic precedence resolution;
-6. strict-mode canon gating;
+6. strict-mode rule_graph gating;
 7. persistent blocked/history nodes;
 8. supersession and repeal lineage;
-9. hashed canonical state for consumers;
+9. hashed rule_graphical state for consumers;
 10. later rules compare against older active, blocked, and restorable superseded nodes.
 
-The valuable output is the accumulated graph and canonical state, not generated prose.
+The valuable output is the accumulated graph and rule_graphical state, not generated prose.
 
 ## Bounded cost
 
@@ -213,7 +214,7 @@ Pairwise semantic analysis is intentionally bounded to **24 rules per rulebook**
 
 ## Security model
 
-Key properties include untrusted-data prompt boundaries, bounded/canonicalized outputs, substantive validator review, fail-closed ambiguity, model-independent authority, immutable active priority, immutable semantic history, semantic-hash-pinned edges, strict blocked-rule admission, canon hash pinning, and retained repeal/supersession history.
+Key properties include untrusted-data prompt boundaries, bounded/rule_graphicalized outputs, substantive validator review, fail-closed ambiguity, model-independent authority, immutable active priority, immutable semantic history, semantic-hash-pinned edges, strict blocked-rule admission, rule_graph hash pinning, and retained repeal/supersession history.
 
 See [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md).
 
@@ -255,7 +256,7 @@ python -m pip install -r requirements-dev.txt
 gltest tests/test_rule_graph.py -v -s
 ```
 
-`tests/test_rule_graph.py` contains 49 Direct Mode scenarios covering independent validator derivation, symmetric semantic-state convergence, malicious disagreement, lifecycle, malformed outputs, prompt-injection behavior, multi-conflict precedence, blocked-rule graph enrichment, nested supersession/restoration safety, canon status/pinning, and the 24-rule bound.
+`tests/test_rule_graph.py` contains 49 Direct Mode scenarios covering independent validator derivation, symmetric semantic-state convergence, malicious disagreement, lifecycle, malformed outputs, prompt-injection behavior, multi-conflict precedence, blocked-rule graph enrichment, nested supersession/restoration safety, rule_graph status/pinning, and the 24-rule bound.
 
 ## Deployment
 

@@ -1,14 +1,25 @@
 {
-  "source_commit": "bd6682d81afa7063d6b595dcdab04d220aed8bbb",
-  "contract_address": "0x67a027446838296FcB3022B376c8ff3873a4566C",
-  "tx_hash": "0x5925745612a28ebea221145467437dded0d8de736907a4b3398b7b2aa13b848f",
+  "historical": true,
+  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "tx_hash": "0x87d19fef4a9ae286aa242ba29bf4f0efa01c09072a83f11ecfdfd94319e521eb",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
   "execution": "SUCCESS",
   "rounds": 1,
-  "votes_observed": {"agree": 3, "disagree": 1, "idle": 1},
+  "votes_observed": {
+    "agree": 3,
+    "disagree": 0,
+    "idle": 2
+  },
   "rule_id": 1,
   "semantic_state": "CLEAR",
   "status_name": "ACTIVE",
-  "canon_version": 1
+  "priority": 100,
+  "modality": "PROHIBIT",
+  "rule_graph_version": 1,
+  "text": "A treasury withdrawal must not execute when fewer than three approvals are present.",
+  "semantic_hash": "2be306fcef013b5409973360e02b237373ee3325318821a294480ef1fb004fa8"
 }

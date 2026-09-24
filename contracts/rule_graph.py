@@ -42,7 +42,7 @@ def conflict_type_name(value: int) -> str:
     return CONFLICT_NAMES.get(int(value), "OTHER")
 def resolution_name(value: int) -> str:
     return RESOLUTION_NAMES.get(int(value), "UNRESOLVED")
-def canon_status_name(unresolved: int, ambiguous: int, resolved: int) -> str:
+def rule_graph_status_name(unresolved: int, ambiguous: int, resolved: int) -> str:
     if int(ambiguous) > 0: return "AMBIGUOUS"
     if int(unresolved) > 0: return "UNRESOLVED"
     if int(resolved) > 0: return "RESOLVED_CONFLICTS"
@@ -65,7 +65,7 @@ def semantic_payload(value: dict) -> dict:
     )}
 def semantic_hash(value: dict) -> str:
     return hash_text(json.dumps(semantic_payload(value), sort_keys=True, separators=(",", ":")))
-def canonical_semantics(raw) -> dict:
+def rule_graphical_semantics(raw) -> dict:
     if not isinstance(raw, dict):
         raw = {}
     modality = MODALITY_BY_NAME.get(str(raw.get("modality", "UNKNOWN")).strip().upper(), MODALITY_UNKNOWN)
@@ -107,7 +107,7 @@ def valid_semantics_shape(value) -> bool:
         return digest == semantic_hash(value)
     except Exception:
         return False
-def canonical_relation(raw) -> dict:
+def rule_graphical_relation(raw) -> dict:
     if not isinstance(raw, dict):
         raw = {}
     raw_kind = str(raw.get("relation", "AMBIGUOUS")).strip().upper()
@@ -219,10 +219,10 @@ def build_independent_relation_prompt(purpose: str, left: dict, right: dict) -> 
 @dataclass
 class Rulebook:
     owner: Address; name: str; purpose: str; strict_mode: bool
-    revision: u32; canon_version: u32
+    revision: u32; rule_graph_version: u32
     rule_ids: DynArray[u256]; relation_ids: DynArray[u256]
     active_count: u32; blocked_count: u32; unresolved_conflicts: u32
-    ambiguous_relations: u32; consistent: bool; canon_hash: str; resolved_conflicts: u32
+    ambiguous_relations: u32; consistent: bool; rule_graph_hash: str; resolved_conflicts: u32
 
 @allow_storage
 @dataclass
@@ -248,12 +248,12 @@ class IRuleGraph:
         def get_rule(self, rule_id: u256) -> dict: ...
         def get_relation(self, relation_id: u256) -> dict: ...
         def relation_between(self, left_rule_id: u256, right_rule_id: u256) -> dict: ...
-        def get_canon(self, rulebook_id: u256) -> list[dict]: ...
-        def get_canon_relations(self, rulebook_id: u256) -> list[dict]: ...
-        def canon_status(self, rulebook_id: u256) -> dict: ...
+        def get_rule_graph(self, rulebook_id: u256) -> list[dict]: ...
+        def get_rule_graph_relations(self, rulebook_id: u256) -> list[dict]: ...
+        def rule_graph_status(self, rulebook_id: u256) -> dict: ...
         def is_consistent(self, rulebook_id: u256) -> bool: ...
-        def is_consistent_for(self, rulebook_id: u256, expected_canon_hash: str) -> bool: ...
-        def current_canon_hash(self, rulebook_id: u256) -> str: ...
+        def is_consistent_for(self, rulebook_id: u256, expected_rule_graph_hash: str) -> bool: ...
+        def current_rule_graph_hash(self, rulebook_id: u256) -> str: ...
     class Write:
         def propose_rule(self, rulebook_id: u256, text: str, priority: int = 100, supersedes_rule_id: int = 0) -> u256: ...
 
@@ -262,7 +262,7 @@ class RulebookCreated(gl.Event):
 class RuleProposed(gl.Event):
     def __init__(self, rule_id: u256, rulebook_id: u256, status: u8, /, **blob): ...
 class RuleActivated(gl.Event):
-    def __init__(self, rule_id: u256, rulebook_id: u256, canon_version: u32, /, **blob): ...
+    def __init__(self, rule_id: u256, rulebook_id: u256, rule_graph_version: u32, /, **blob): ...
 class RuleRepealed(gl.Event):
     def __init__(self, rule_id: u256, rulebook_id: u256, /, **blob): ...
 class RuleSuperseded(gl.Event):
@@ -293,7 +293,7 @@ class RuleGraph(gl.Contract):
         return relation
     def _require_owner(self, book: Rulebook) -> None:
 
-        if book.owner != gl.message.sender_address: raise gl.vm.UserError(f"{ERR_EXPECTED}: only the rulebook owner may modify canon")
+        if book.owner != gl.message.sender_address: raise gl.vm.UserError(f"{ERR_EXPECTED}: only the rulebook owner may modify rule_graph")
     def _same_book(self, rule: Rule, rulebook_id: u256) -> None:
 
         if int(rule.rulebook_id) != int(rulebook_id): raise gl.vm.UserError(f"{ERR_EXPECTED}: rule belongs to another rulebook")
@@ -307,7 +307,7 @@ class RuleGraph(gl.Contract):
     def _normalize_rule(self, purpose: str, rule_text: str) -> dict:
         purpose_mem, text_mem = str(purpose), str(rule_text)
         def leader() -> dict:
-            return canonical_semantics(gl.nondet.exec_prompt(build_normalize_prompt(purpose_mem, text_mem), response_format="json"))
+            return rule_graphical_semantics(gl.nondet.exec_prompt(build_normalize_prompt(purpose_mem, text_mem), response_format="json"))
         def validator(leader_result) -> bool:
 
             if not isinstance(leader_result, gl.vm.Return): return False
@@ -315,7 +315,7 @@ class RuleGraph(gl.Contract):
                 candidate = leader_result.calldata
 
                 if not valid_semantics_shape(candidate): return False
-                independent = canonical_semantics(gl.nondet.exec_prompt(
+                independent = rule_graphical_semantics(gl.nondet.exec_prompt(
                     build_independent_normalize_prompt(purpose_mem, text_mem), response_format="json"
                 ))
 
@@ -338,7 +338,7 @@ class RuleGraph(gl.Contract):
     def _analyze_relation(self, purpose: str, left: dict, right: dict) -> dict:
         purpose_mem, left_mem, right_mem = str(purpose), left, right
         def leader() -> dict:
-            return canonical_relation(gl.nondet.exec_prompt(build_relation_prompt(purpose_mem, left_mem, right_mem), response_format="json"))
+            return rule_graphical_relation(gl.nondet.exec_prompt(build_relation_prompt(purpose_mem, left_mem, right_mem), response_format="json"))
         def validator(leader_result) -> bool:
 
             if not isinstance(leader_result, gl.vm.Return): return False
@@ -346,7 +346,7 @@ class RuleGraph(gl.Contract):
                 candidate = leader_result.calldata
 
                 if not valid_relation_shape(candidate): return False
-                independent = canonical_relation(gl.nondet.exec_prompt(
+                independent = rule_graphical_relation(gl.nondet.exec_prompt(
                     build_independent_relation_prompt(purpose_mem, left_mem, right_mem), response_format="json"
                 ))
 
@@ -432,14 +432,14 @@ class RuleGraph(gl.Contract):
                 resolved += int(relation.resolution) != RES_UNRESOLVED
             if int(relation.kind) == REL_AMBIGUOUS:
                 ambiguous += 1
-        canon_payload = {
+        rule_graph_payload = {
             "rulebook_id": int(rulebook_id), "strict_mode": bool(book.strict_mode), "rules": active_payload,
             "relations": relation_payload,
         }
         book.active_count = u32(active_count); book.blocked_count = u32(blocked_count)
         book.unresolved_conflicts = u32(unresolved); book.ambiguous_relations = u32(ambiguous)
         book.resolved_conflicts = u32(resolved); book.consistent = unresolved == 0 and ambiguous == 0
-        book.canon_hash = hash_text(json.dumps(canon_payload, sort_keys=True, separators=(",", ":")))
+        book.rule_graph_hash = hash_text(json.dumps(rule_graph_payload, sort_keys=True, separators=(",", ":")))
     def _store_relation(self, book: Rulebook, left_rule: Rule, right_rule: Rule, outcome: dict, now: int) -> u256:
         key = pair_key(int(left_rule.rulebook_id), int(left_rule.rule_id), int(right_rule.rule_id))
 
@@ -469,7 +469,7 @@ class RuleGraph(gl.Contract):
         self.next_rulebook_id = u256(int(self.next_rulebook_id) + 1)
         book = self.rulebooks.get_or_insert_default(rulebook_id)
         book.owner = gl.message.sender_address; book.name = name; book.purpose = purpose
-        book.strict_mode = bool(strict_mode); book.revision = u32(1); book.canon_version = u32(0)
+        book.strict_mode = bool(strict_mode); book.revision = u32(1); book.rule_graph_version = u32(0)
         self._refresh_book_state(rulebook_id)
         RulebookCreated(rulebook_id, gl.message.sender_address, name=name, strict_mode=bool(strict_mode)).emit()
         return rulebook_id
@@ -517,14 +517,14 @@ class RuleGraph(gl.Contract):
             self._store_relation(book, other, rule, outcome, now)
         blocker = self._blocking_reason(book, rule)
         if blocker == "":
-            rule.status = u8(RULE_ACTIVE); book.canon_version = u32(int(book.canon_version) + 1)
-            rule.activated_version = book.canon_version
+            rule.status = u8(RULE_ACTIVE); book.rule_graph_version = u32(int(book.rule_graph_version) + 1)
+            rule.activated_version = book.rule_graph_version
             self._apply_supersession_if_needed(book, rule)
         book.revision = u32(next_revision)
         self._refresh_book_state(rulebook_id)
         RuleProposed(rule_id, rulebook_id, rule.status, blocker=blocker, priority=priority, semantic_hash=str(rule.semantic_hash)).emit()
         if int(rule.status) == RULE_ACTIVE:
-            RuleActivated(rule_id, rulebook_id, book.canon_version).emit()
+            RuleActivated(rule_id, rulebook_id, book.rule_graph_version).emit()
         return rule_id
     @gl.public.write
     def set_blocked_rule_priority(self, rule_id: u256, priority: int) -> None:
@@ -547,10 +547,10 @@ class RuleGraph(gl.Contract):
 
         if blocker != "": raise gl.vm.UserError(f"{ERR_EXPECTED}: cannot activate: {blocker}")
         rule.status = u8(RULE_ACTIVE)
-        book.revision = u32(int(book.revision) + 1); book.canon_version = u32(int(book.canon_version) + 1)
-        rule.activated_version = book.canon_version
+        book.revision = u32(int(book.revision) + 1); book.rule_graph_version = u32(int(book.rule_graph_version) + 1)
+        rule.activated_version = book.rule_graph_version
         self._apply_supersession_if_needed(book, rule); self._refresh_book_state(rule.rulebook_id)
-        RuleActivated(rule_id, rule.rulebook_id, book.canon_version).emit()
+        RuleActivated(rule_id, rule.rulebook_id, book.rule_graph_version).emit()
     @gl.public.write
     def repeal_rule(self, rule_id: u256) -> None:
         rule = self._require_rule(rule_id); book = self._require_rulebook(rule.rulebook_id); self._require_owner(book)
@@ -559,9 +559,9 @@ class RuleGraph(gl.Contract):
         was_active = int(rule.status) == RULE_ACTIVE
         rule.status = u8(RULE_REPEALED); book.revision = u32(int(book.revision) + 1)
         if was_active:
-            book.canon_version = u32(int(book.canon_version) + 1)
+            book.rule_graph_version = u32(int(book.rule_graph_version) + 1)
         self._refresh_book_state(rule.rulebook_id)
-        RuleRepealed(rule_id, rule.rulebook_id, canon_version=int(book.canon_version)).emit()
+        RuleRepealed(rule_id, rule.rulebook_id, rule_graph_version=int(book.rule_graph_version)).emit()
     @gl.public.write
     def restore_superseded_rule(self, rule_id: u256) -> None:
         rule = self._require_rule(rule_id); book = self._require_rulebook(rule.rulebook_id); self._require_owner(book)
@@ -576,24 +576,24 @@ class RuleGraph(gl.Contract):
 
         if blocker != "": raise gl.vm.UserError(f"{ERR_EXPECTED}: cannot restore: {blocker}")
         rule.status = u8(RULE_ACTIVE); rule.superseded_by_rule_id = u256(0)
-        book.revision = u32(int(book.revision) + 1); book.canon_version = u32(int(book.canon_version) + 1)
-        rule.activated_version = book.canon_version
+        book.revision = u32(int(book.revision) + 1); book.rule_graph_version = u32(int(book.rule_graph_version) + 1)
+        rule.activated_version = book.rule_graph_version
         self._refresh_book_state(rule.rulebook_id)
-        RuleActivated(rule_id, rule.rulebook_id, book.canon_version, restored=True).emit()
+        RuleActivated(rule_id, rule.rulebook_id, book.rule_graph_version, restored=True).emit()
     @gl.public.view
     def get_rulebook(self, rulebook_id: u256) -> dict:
         book = self._require_rulebook(rulebook_id)
         return {
             "owner": str(book.owner), "name": str(book.name), "purpose": str(book.purpose),
             "strict_mode": bool(book.strict_mode), "revision": int(book.revision),
-            "canon_version": int(book.canon_version), "rule_count": len(book.rule_ids),
+            "rule_graph_version": int(book.rule_graph_version), "rule_count": len(book.rule_ids),
             "relation_count": len(book.relation_ids), "active_count": int(book.active_count),
             "blocked_count": int(book.blocked_count), "unresolved_conflicts": int(book.unresolved_conflicts),
             "resolved_conflicts": int(book.resolved_conflicts), "ambiguous_relations": int(book.ambiguous_relations),
             "has_conflicts": int(book.resolved_conflicts) + int(book.unresolved_conflicts) > 0,
             "has_resolved_conflicts": int(book.resolved_conflicts) > 0,
-            "canon_status": canon_status_name(book.unresolved_conflicts, book.ambiguous_relations, book.resolved_conflicts),
-            "consistent": bool(book.consistent), "canon_hash": str(book.canon_hash)}
+            "rule_graph_status": rule_graph_status_name(book.unresolved_conflicts, book.ambiguous_relations, book.resolved_conflicts),
+            "consistent": bool(book.consistent), "rule_graph_hash": str(book.rule_graph_hash)}
     @gl.public.view
     def get_rule(self, rule_id: u256) -> dict:
         rule = self._require_rule(rule_id)
@@ -634,7 +634,7 @@ class RuleGraph(gl.Contract):
         result = self.get_relation(relation.relation_id); result["exists"] = True
         return result
     @gl.public.view
-    def get_canon(self, rulebook_id: u256) -> list[dict]:
+    def get_rule_graph(self, rulebook_id: u256) -> list[dict]:
         book = self._require_rulebook(rulebook_id)
         result = []
         for rule_id in book.rule_ids:
@@ -648,7 +648,7 @@ class RuleGraph(gl.Contract):
                 "priority": int(rule.priority), "semantic_hash": str(rule.semantic_hash)})
         return result
     @gl.public.view
-    def get_canon_relations(self, rulebook_id: u256) -> list[dict]:
+    def get_rule_graph_relations(self, rulebook_id: u256) -> list[dict]:
         book = self._require_rulebook(rulebook_id)
         active = {int(rid) for rid in book.rule_ids if int(self._require_rule(rid).status) == RULE_ACTIVE}
         result = []
@@ -666,15 +666,15 @@ class RuleGraph(gl.Contract):
                 "right_semantic_hash": str(relation.right_semantic_hash)})
         return result
     @gl.public.view
-    def canon_status(self, rulebook_id: u256) -> dict:
+    def rule_graph_status(self, rulebook_id: u256) -> dict:
         book = self._require_rulebook(rulebook_id)
         return {
-            "status": canon_status_name(book.unresolved_conflicts, book.ambiguous_relations, book.resolved_conflicts),
+            "status": rule_graph_status_name(book.unresolved_conflicts, book.ambiguous_relations, book.resolved_conflicts),
             "consistent": bool(book.consistent),
             "has_conflicts": int(book.resolved_conflicts) + int(book.unresolved_conflicts) > 0,
             "resolved_conflicts": int(book.resolved_conflicts), "unresolved_conflicts": int(book.unresolved_conflicts),
             "ambiguous_relations": int(book.ambiguous_relations),
-            "canon_hash": str(book.canon_hash), "canon_version": int(book.canon_version)}
+            "rule_graph_hash": str(book.rule_graph_hash), "rule_graph_version": int(book.rule_graph_version)}
     @gl.public.view
     def blocking_reason(self, rule_id: u256) -> str:
         rule = self._require_rule(rule_id)
@@ -685,9 +685,9 @@ class RuleGraph(gl.Contract):
     def is_consistent(self, rulebook_id: u256) -> bool:
         return bool(self._require_rulebook(rulebook_id).consistent)
     @gl.public.view
-    def is_consistent_for(self, rulebook_id: u256, expected_canon_hash: str) -> bool:
+    def is_consistent_for(self, rulebook_id: u256, expected_rule_graph_hash: str) -> bool:
         book = self._require_rulebook(rulebook_id)
-        return bool(book.consistent) and str(book.canon_hash) == str(expected_canon_hash)
+        return bool(book.consistent) and str(book.rule_graph_hash) == str(expected_rule_graph_hash)
     @gl.public.view
-    def current_canon_hash(self, rulebook_id: u256) -> str:
-        return str(self._require_rulebook(rulebook_id).canon_hash)
+    def current_rule_graph_hash(self, rulebook_id: u256) -> str:
+        return str(self._require_rulebook(rulebook_id).rule_graph_hash)

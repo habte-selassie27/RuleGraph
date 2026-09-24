@@ -4,14 +4,17 @@
   "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
   "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
   "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
-  "tx_hash": "0xf6ab8cfa8e984d1c28a8b54977a495d7372e9649b7a8fe28e064a624705a5d9b",
+  "tx_hash": "0x9d1a00828d08876623c3e2a7221c80430f040c27e14ee9bc84de18a9d71db75a",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
-  "rounds": 4,
+  "execution": "SUCCESS",
+  "rounds": 1,
   "votes_observed": {
-    "agree": 3,
+    "agree": 4,
     "disagree": 0,
-    "idle": 2
+    "idle": 1
   },
-  "note": "Rule 2 proposed at equal priority 100; strict mode blocked UNRESOLVED_CONFLICT on relation 1."
+  "rule_id": 3,
+  "status_name": "REPEALED",
+  "note": "Duplicate of rule text during retry storm; repealed to leave a clean two-rule lifecycle."
 }

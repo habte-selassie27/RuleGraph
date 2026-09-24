@@ -1,15 +1,16 @@
 {
   "jsonrpc": "2.0",
   "result": {
-    "transactionHash": "0xacfed35041fae0ca9224ab07034838145f51c2f112809e8b968814be5584a2f2",
-    "from": "0xA7EeAE0E93793e3146Cb14b0700251B8b0EBADFB",
-    "to": "0x67a027446838296FcB3022B376c8ff3873a4566C",
+    "transactionHash": "0xcdbfed2a17b5744b2600ffcd76bc44b18bff449038c08cd5d7e59f5ccfe53796",
+    "from": "0x04e0353B7218b66D6803725ce7342E6e1225DB1b",
+    "to": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
     "contractAddress": null,
-    "status": "0x1",
-    "blockNumber": "0x0",
-    "transactionIndex": "0x0",
-    "gasUsed": "0x7a1200",
-    "type": "0x0"
+    "status": null,
+    "blockNumber": null,
+    "transactionIndex": null,
+    "gasUsed": null,
+    "type": null
   },
-  "id": 1
+  "id": 1,
+  "notes": "Only the transaction hash, sender, and contract address were observed for this redeployment. Studio/Explorer reported FINALIZED and consensus Accepted; RPC block, gas, and hex status fields were not independently captured and are intentionally null."
 }

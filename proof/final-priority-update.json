@@ -1,12 +1,19 @@
 {
-  "source_commit": "bd6682d81afa7063d6b595dcdab04d220aed8bbb",
-  "contract_address": "0x67a027446838296FcB3022B376c8ff3873a4566C",
-  "tx_hash": "0x7b60cbeb65805a5c8a4a5c7820d672bb5bef222bb70af0633efdc5d1d9e71525",
+  "historical": true,
+  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "tx_hash": "0x5ecf8b6c86899366cd6184882a771378e4511c4735c455f59e5fa23116b0fd38",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
   "execution": "SUCCESS",
   "rounds": 1,
-  "votes_observed": {"agree": 3, "idle": 2},
+  "votes_observed": {
+    "agree": 5,
+    "disagree": 0,
+    "idle": 0
+  },
   "rule_id": 2,
   "priority": 200,
   "relation_id": 1,

@@ -6,9 +6,9 @@ Standalone GenLayer Intelligent Contract.
 
 No frontend. No backend. No off-chain database. The Intelligent Contract is the source of truth.
 
-The hardened StudioNet deployment is `0x67a027446838296FcB3022B376c8ff3873a4566C`, from source commit `bd6682d81afa7063d6b595dcdab04d220aed8bbb`.
+The official StudioNet deployment is [`0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757`](https://explorer-studio.genlayer.com/address/0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757), from source commit `60aa7005d4d38a19994629e297eccdde9c969c92`. [Open it in Studio](https://studio.genlayer.com/?import-contract=0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757).
 Machine-readable lifecycle proof is recorded under `proof/` and linked from
-`DEPLOYMENT.md`.
+`DEPLOYMENT.md`. `proof/current-lifecycle.json` covers the current deployment; older lifecycle records are explicitly marked historical.
 
 ## Primitive
 
@@ -21,7 +21,7 @@ It is intended for builders who need a constitution, policy stack, mandate set, 
 Rule_Graph has two independent non-deterministic consensus boundaries:
 
 1. **Rule normalization**: a leader proposes a bounded semantic representation of one atomic norm. Validators independently derive the rule meaning from the immutable source and compare stable substantive facts, allowing harmless wording variance.
-2. **Rule relation analysis**: a leader proposes whether two rules are unrelated, compatible, redundant, specializing, conflicting, or ambiguous. Validators independently derive the relation from both source rules and semantic records, comparing authoritative relation kind; conflict subtype is explanatory metadata rather than canonical state.
+2. **Rule relation analysis**: a leader proposes whether two rules are unrelated, compatible, redundant, specializing, conflicting, or ambiguous. Validators independently derive the relation from both source rules and semantic records, comparing authoritative relation kind; conflict subtype is explanatory metadata rather than rule_graphical state.
 
 Both use `gl.vm.run_nondet_unsafe` with custom validators.
 
@@ -50,10 +50,10 @@ Rule_Graph stores more than one-shot receipts:
 - blocked proposals;
 - supersession lineage;
 - repeal/restoration history;
-- revision and canon versions;
-- active canon hash;
+- revision and rule_graph versions;
+- active rule_graph hash;
 - consistency status.
-- explicit canon status distinguishing coherent state from deterministically resolved conflicts.
+- explicit rule_graph status distinguishing coherent state from deterministically resolved conflicts.
 
 Later rules are compared with active, blocked, and superseded historical nodes so a blocked or restorable node can never be activated later without relation coverage against rules added after it.
 
@@ -62,11 +62,11 @@ Later rules are compared with active, blocked, and superseded historical nodes s
 Other contracts can call:
 
 - `is_consistent(rulebook_id)`
-- `is_consistent_for(rulebook_id, expected_canon_hash)`
-- `current_canon_hash(rulebook_id)`
-- `get_canon(rulebook_id)`
-- `get_canon_relations(rulebook_id)`
-- `canon_status(rulebook_id)`
+- `is_consistent_for(rulebook_id, expected_rule_graph_hash)`
+- `current_rule_graph_hash(rulebook_id)`
+- `get_rule_graph(rulebook_id)`
+- `get_rule_graph_relations(rulebook_id)`
+- `rule_graph_status(rulebook_id)`
 - `relation_between(left_rule_id, right_rule_id)`
 
 The repository includes `IRule_Graph` as a typed contract interface.
@@ -75,7 +75,7 @@ The repository includes `IRule_Graph` as a typed contract interface.
 
 - Individual ambiguity fails closed.
 - Strict mode blocks unresolved conflicts and ambiguous relations.
-- Permissive mode can intentionally expose an inconsistent active draft canon.
+- Permissive mode can intentionally expose an inconsistent active draft rule_graph.
 - Rule semantics are immutable after consensus.
 - Active priority is immutable.
 - Pairwise edges are pinned to semantic hashes.
@@ -91,7 +91,7 @@ The repository contains:
 - prompt-injection behavior tests;
 - malformed-output and invalid-subtype tests;
 - multi-conflict precedence and 24-rule bound tests;
-- deterministic priority and canon tests;
+- deterministic priority and rule_graph tests;
 - symmetric CLEAR/AMBIGUOUS convergence tests and conflict-subtype metadata tests;
 - an offline 14-check preflight;
 - architecture documentation;
@@ -112,7 +112,7 @@ A concise live demo should show:
 5. change only the blocked rule priority to 200;
 6. observe the existing edge change deterministically to `RIGHT_PREVAILS`;
 7. activate the blocked rule without any new semantic LLM call;
-8. pin the new `canon_hash` with `is_consistent_for`;
+8. pin the new `rule_graph_hash` with `is_consistent_for`;
 9. submit a superseding amendment and show immutable lineage.
 
 That sequence demonstrates consensus, state design, deterministic mechanics, reuse, and graph compounding in one lifecycle.

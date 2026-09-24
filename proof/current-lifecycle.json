@@ -1,24 +1,98 @@
 {
-  "source_commit": "bd6682d81afa7063d6b595dcdab04d220aed8bbb",
-  "contract_address": "0x67a027446838296FcB3022B376c8ff3873a4566C",
-  "rulebook_id": 1,
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "deployment_tx": "0xcdbfed2a17b5744b2600ffcd76bc44b18bff449038c08cd5d7e59f5ccfe53796",
+  "status": "partial",
+  "lifecycle_status": "not_complete",
+  "network": "GenLayer StudioNet",
   "transactions": {
-    "create_rulebook": "0x9a7f171de158b3096b70b224ee70369e68740bc606bcfb7806a70d67bc2852e4",
-    "rule_a": "0x5925745612a28ebea221145467437dded0d8de736907a4b3398b7b2aa13b848f",
-    "rule_b_conflict": "0x79ffc24bc6f70a2ca1b271851e245c5571586395d8b0e402a369de010b930340",
-    "priority_update": "0x7b60cbeb65805a5c8a4a5c7820d672bb5bef222bb70af0633efdc5d1d9e71525",
-    "activation": "0x8becc751189a7074526264ef92f770be35c9cd7e03e52fa518e4f9468701477d"
+    "deployment": "0xcdbfed2a17b5744b2600ffcd76bc44b18bff449038c08cd5d7e59f5ccfe53796",
+    "create_rulebook": "0xf66726602b595a10862e94b7eefa27df076604d840f22169272fe23316204db9",
+    "rule_1": "0x25cb4f403486c0de8065c50300f50fd3bca4ebbc4379b2e6c5b24d72d3205fdf",
+    "rule_2": "0x78b13982eebbc94166bec0b8496072b750ab06f04eca9b58ceef1d7852f37e8d",
+    "rule_a_failed_attempt": "0xdd32186842e350755c5897e34f2383d852ce62f311c073e2624e9bcfdf68bb27"
+  },
+  "observed_receipts": {
+    "deployment": {
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "votes_observed": {"agree": 3, "disagree": 0, "idle": 2}
+    },
+    "create_rulebook": {
+      "status": "ACCEPTED",
+      "result": "MAJORITY_AGREE",
+      "votes_observed": {"agree": 3, "disagree": 0, "idle": 2}
+    },
+    "rule_1": {
+      "status": "ACCEPTED",
+      "result": "MAJORITY_AGREE",
+      "votes_observed": {"agree": 3, "disagree": 2, "idle": 0}
+    },
+    "rule_2": {
+      "status": "ACCEPTED",
+      "result": "MAJORITY_AGREE",
+      "votes_observed": {"agree": 3, "disagree": 0, "idle": 2}
+    },
+    "rule_a_failed_attempt": {
+      "status": "UNDETERMINED",
+      "result": "MAJORITY_DISAGREE",
+      "effect": "not_committed"
+    }
   },
   "observed_state": {
+    "rulebook_id": 1,
+    "rule_count": 2,
     "active_count": 2,
     "blocked_count": 0,
-    "canon_version": 2,
-    "canon_hash": "8b3e00983548ade2b9a799cf960a7b47639def3eb535fa6e4c17649b2e285438",
-    "canon_status": "RESOLVED_CONFLICTS",
-    "relation": "CONFLICT / RIGHT_PREVAILS",
-    "resolved_conflicts": 1,
+    "relation_count": 1,
+    "revision": 3,
+    "rule_graph_version": 2,
+    "rule_graph_hash": "c4cb36b131907c4e7de4ef03f3162797a31290d052860b7ea5fe40f10f230f9a",
+    "rule_graph_status": "COHERENT",
+    "consistent": true,
+    "has_conflicts": false,
+    "resolved_conflicts": 0,
     "unresolved_conflicts": 0,
-    "exact_pin": true,
-    "stale_pin": false
-  }
+    "rules": [
+      {
+        "rule_id": 1,
+        "status": "ACTIVE",
+        "semantic_state": "CLEAR",
+        "text": "A treasury withdrawal must not execute when fewer than three approvals are present."
+      },
+      {
+        "rule_id": 2,
+        "status": "ACTIVE",
+        "semantic_state": "CLEAR",
+        "text": "During an active critical exploit, the treasury operator is prohibited from executing a protocol treasury withdrawal even when three authorized treasury approvals are present."
+      }
+    ],
+    "relations": [
+      {
+        "relation_id": 1,
+        "left_rule_id": 1,
+        "right_rule_id": 2,
+        "kind": "SPECIALIZES",
+        "conflict_type": "NONE",
+        "resolution": "NONE"
+      }
+    ]
+  },
+  "pending": {
+    "conflicting_rule_proposal": {
+      "status": "receipt_unavailable",
+      "tx_hash": "0xde989a1739a526570304c23c900083c14197a4858212d4970b920761a54ebb42",
+      "effect": "not_asserted"
+    },
+    "priority_update": {
+      "status": "not_yet_executed",
+      "tx_hash": null
+    },
+    "blocked_rule_activation": {
+      "status": "not_yet_executed",
+      "tx_hash": null
+    }
+  },
+  "note": "Only observed transactions and state for the current contract are included. No conflict-resolution or activation evidence is claimed for this deployment."
 }
