@@ -8,7 +8,7 @@ recorded here so the deployment can be independently audited.
 
 | Field | Value |
 |---|---|
-| Source commit | `60aa7005d4d38a19994629e297eccdde9c969c92` |
+| Source commit | `d63eb90585369597d7e66f143264c94254ff42ad` |
 | Network | GenLayer StudioNet |
 | CLI | `genlayer@0.39.2` |
 | Deployer | `0x04e0353B7218b66D6803725ce7342E6e1225DB1b` |

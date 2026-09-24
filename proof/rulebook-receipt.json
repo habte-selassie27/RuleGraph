@@ -2,7 +2,7 @@
   "historical": true,
   "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
   "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
-  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "source_commit": "d63eb90585369597d7e66f143264c94254ff42ad",
   "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
   "tx_hash": "0x378b2be1b204883998e3a7a515419bfd65d499ce7fd69dce404f9637d9577747",
   "status": "FINALIZED",

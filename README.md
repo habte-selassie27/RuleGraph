@@ -24,7 +24,7 @@ The result is not a one-shot AI verdict. It is a living, versioned rule graph wh
 
 Current official StudioNet deployment: [`0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757`](https://explorer-studio.genlayer.com/address/0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757),
 [Open in Studio](https://studio.genlayer.com/?import-contract=0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757),
-deployed from source commit `60aa7005d4d38a19994629e297eccdde9c969c92`. See the [deployment and sanitized proof records](DEPLOYMENT.md); current lifecycle evidence is tracked separately from historical evidence.
+deployed from source commit `d63eb90585369597d7e66f143264c94254ff42ad`. See the [deployment and sanitized proof records](DEPLOYMENT.md); current lifecycle evidence is tracked separately from historical evidence.
 
 ## Why this primitive exists
 
