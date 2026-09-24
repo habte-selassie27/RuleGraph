@@ -1,0 +1,102 @@
+{
+  "historical": true,
+  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_note": "Lifecycle evidence belongs to the superseded deployment and must not be associated with the current contract.",
+  "source_commit": "d63eb90585369597d7e66f143264c94254ff42ad",
+  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "deployment_tx": "0xcdbfed2a17b5744b2600ffcd76bc44b18bff449038c08cd5d7e59f5ccfe53796",
+  "deployer": "0x04e0353B7218b66D6803725ce7342E6e1225DB1b",
+  "status": "partial",
+  "lifecycle_status": "not_complete",
+  "network": "GenLayer StudioNet",
+  "transactions": {
+    "deployment": "0xcdbfed2a17b5744b2600ffcd76bc44b18bff449038c08cd5d7e59f5ccfe53796",
+    "create_rulebook": "0xf66726602b595a10862e94b7eefa27df076604d840f22169272fe23316204db9",
+    "rule_1": "0x25cb4f403486c0de8065c50300f50fd3bca4ebbc4379b2e6c5b24d72d3205fdf",
+    "rule_2": "0x78b13982eebbc94166bec0b8496072b750ab06f04eca9b58ceef1d7852f37e8d",
+    "rule_a_failed_attempt": "0xdd32186842e350755c5897e34f2383d852ce62f311c073e2624e9bcfdf68bb27"
+  },
+  "observed_receipts": {
+    "deployment": {
+      "status": "FINALIZED",
+      "result": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "votes_observed": {"agree": 3, "disagree": 0, "idle": 2}
+    },
+    "create_rulebook": {
+      "status": "ACCEPTED",
+      "result": "MAJORITY_AGREE",
+      "votes_observed": {"agree": 3, "disagree": 0, "idle": 2}
+    },
+    "rule_1": {
+      "status": "ACCEPTED",
+      "result": "MAJORITY_AGREE",
+      "votes_observed": {"agree": 3, "disagree": 2, "idle": 0}
+    },
+    "rule_2": {
+      "status": "ACCEPTED",
+      "result": "MAJORITY_AGREE",
+      "votes_observed": {"agree": 3, "disagree": 0, "idle": 2}
+    },
+    "rule_a_failed_attempt": {
+      "status": "UNDETERMINED",
+      "result": "MAJORITY_DISAGREE",
+      "effect": "not_committed"
+    }
+  },
+  "observed_state": {
+    "rulebook_id": 1,
+    "rule_count": 2,
+    "active_count": 2,
+    "blocked_count": 0,
+    "relation_count": 1,
+    "revision": 3,
+    "rule_graph_version": 2,
+    "rule_graph_hash": "c4cb36b131907c4e7de4ef03f3162797a31290d052860b7ea5fe40f10f230f9a",
+    "rule_graph_status": "COHERENT",
+    "consistent": true,
+    "has_conflicts": false,
+    "resolved_conflicts": 0,
+    "unresolved_conflicts": 0,
+    "rules": [
+      {
+        "rule_id": 1,
+        "status": "ACTIVE",
+        "semantic_state": "CLEAR",
+        "text": "A treasury withdrawal must not execute when fewer than three approvals are present."
+      },
+      {
+        "rule_id": 2,
+        "status": "ACTIVE",
+        "semantic_state": "CLEAR",
+        "text": "During an active critical exploit, the treasury operator is prohibited from executing a protocol treasury withdrawal even when three authorized treasury approvals are present."
+      }
+    ],
+    "relations": [
+      {
+        "relation_id": 1,
+        "left_rule_id": 1,
+        "right_rule_id": 2,
+        "kind": "SPECIALIZES",
+        "conflict_type": "NONE",
+        "resolution": "NONE"
+      }
+    ]
+  },
+  "pending": {
+    "conflicting_rule_proposal": {
+      "status": "receipt_unavailable",
+      "tx_hash": "0xde989a1739a526570304c23c900083c14197a4858212d4970b920761a54ebb42",
+      "effect": "not_asserted"
+    },
+    "priority_update": {
+      "status": "not_yet_executed",
+      "tx_hash": null
+    },
+    "blocked_rule_activation": {
+      "status": "not_yet_executed",
+      "tx_hash": null
+    }
+  },
+  "note": "Historical partial lifecycle for superseded contract 0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757. Only observed transactions and state for that deployment are included. No conflict-resolution or activation evidence is claimed for it."
+}

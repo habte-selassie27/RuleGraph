@@ -22,8 +22,8 @@ Instead of repeatedly asking an LLM, "is this policy okay?", Rule_Graph maintain
 
 The result is not a one-shot AI verdict. It is a living, versioned rule graph whose usefulness increases as more rules are added.
 
-Current official StudioNet deployment: [`0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757`](https://explorer-studio.genlayer.com/address/0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757),
-[Open in Studio](https://studio.genlayer.com/?import-contract=0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757),
+Current official StudioNet deployment: [`0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488`](https://explorer-studio.genlayer.com/address/0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488),
+[Open in Studio](https://studio.genlayer.com/?import-contract=0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488),
 deployed from source commit `d63eb90585369597d7e66f143264c94254ff42ad`. See the [deployment and sanitized proof records](DEPLOYMENT.md); current lifecycle evidence is tracked separately from historical evidence.
 
 ## Why this primitive exists

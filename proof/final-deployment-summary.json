@@ -1,18 +1,20 @@
 {
   "source_commit": "d63eb90585369597d7e66f143264c94254ff42ad",
-  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "contract_address": "0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488",
   "network": "GenLayer StudioNet",
   "cli_version": "0.39.2",
-  "deployer": "0x04e0353B7218b66D6803725ce7342E6e1225DB1b",
-  "deployment_tx": "0xcdbfed2a17b5744b2600ffcd76bc44b18bff449038c08cd5d7e59f5ccfe53796",
+  "deployer": "0x5B3661C576c7001e6d6279C67F3779705d334c89",
+  "deployment_tx": "0x27eddefef3b87e050a9ecb0e0cda85d7a7548d32a494297d06ba62f1bcd38185",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
   "execution": "SUCCESS",
   "rounds": 1,
   "votes_observed": {
-    "agree": 3,
+    "agree": 5,
     "disagree": 0,
-    "idle": 2
+    "idle": 0
   },
-  "notes": "Sanitized from observed GenLayer CLI output for rewritten Rule_Graph contract."
+  "nonce": 67,
+  "created_at": "2026-09-24T11:33:44.757723+00:00",
+  "notes": "Sanitized from observed GenLayer CLI output and Studio Explorer API for the current Rule_Graph redeploy."
 }

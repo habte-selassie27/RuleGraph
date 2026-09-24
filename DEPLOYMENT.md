@@ -11,18 +11,19 @@ recorded here so the deployment can be independently audited.
 | Source commit | `d63eb90585369597d7e66f143264c94254ff42ad` |
 | Network | GenLayer StudioNet |
 | CLI | `genlayer@0.39.2` |
-| Deployer | `0x04e0353B7218b66D6803725ce7342E6e1225DB1b` |
-| Deployment transaction | `0xcdbfed2a17b5744b2600ffcd76bc44b18bff449038c08cd5d7e59f5ccfe53796` |
-| Contract address | `0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757` |
-| Studio | [Open contract](https://studio.genlayer.com/?import-contract=0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757) |
-| Explorer | [View contract](https://explorer-studio.genlayer.com/address/0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757) |
+| Deployer | `0x5B3661C576c7001e6d6279C67F3779705d334c89` |
+| Deployment transaction | `0x27eddefef3b87e050a9ecb0e0cda85d7a7548d32a494297d06ba62f1bcd38185` |
+| Contract address | `0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488` |
+| Studio | [Open contract](https://studio.genlayer.com/?import-contract=0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488) |
+| Explorer | [View contract](https://explorer-studio.genlayer.com/address/0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488) |
 | Deployment receipt | `FINALIZED`, `MAJORITY_AGREE`; execution `SUCCESS` |
 
 The deployment schema was verified through the CLI, and the deployment transaction is finalized on StudioNet. The CLI returned the contract address above; block number and gas values are not included because they were not independently captured.
-Previous deployments `0xfA6284e0728A80C80E213eA429aFD800BC1F5E69`,
+Previous deployments `0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757`,
+`0xfA6284e0728A80C80E213eA429aFD800BC1F5E69`,
 `0x6C251947a2b08F8b550b17a17082e2c3e2378136`, `0x67a027446838296FcB3022B376c8ff3873a4566C`
 (commit `bd6682d...`), and `0xf529EDf5291B7fB78f0ba3922b9162A593972020`
-are historical because the contract source changed after those deployments.
+are historical because a later redeployment superseded them.
 
 ## Requirements
 
@@ -91,11 +92,11 @@ Minimum proof should include:
 
 The authoritative current lifecycle record is [`proof/current-lifecycle.json`](proof/current-lifecycle.json). The redeployment boundary is recorded in [`proof/deployment-transition.json`](proof/deployment-transition.json).
 
-The current contract has a finalized deployment and a partial observed lifecycle: rulebook `1` has two CLEAR ACTIVE rules, `COHERENT` rule_graph version `2`, and no resolved or unresolved conflicts. The current conflicting-rule submission has no verified receipt; priority update and blocked-rule activation are `not_yet_executed`. No current conflict-resolution or activation evidence is claimed.
+The current contract has a finalized deployment and a partial observed lifecycle: rulebook `1` (`Treasury`, strict) exists with `rule_count=0`, `COHERENT` rule_graph version `0`, and no rules or relations yet. No current conflict-resolution or activation evidence is claimed; those steps remain `not_yet_executed`.
 
 ## Historical lifecycle evidence (previous deployment)
 
-The complete lifecycle table below is retained historical evidence for the previous deployment at `0xfA6284e0728A80C80E213eA429aFD800BC1F5E69`. Its transaction hashes remain associated with that contract.
+The complete lifecycle table below is retained historical evidence for the previous deployment at `0xfA6284e0728A80C80E213eA429aFD800BC1F5E69`. Its transaction hashes remain associated with that contract. The more recent superseded deployment at `0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757` is preserved in [`proof/historical-lifecycle-521C.json`](proof/historical-lifecycle-521C.json) and [`proof/historical-deployment-521C.json`](proof/historical-deployment-521C.json).
 
 | Operation | Transaction | Observed result |
 |---|---|---|
@@ -137,4 +138,4 @@ Offline repository preflight:
 python scripts/preflight.py
 ```
 
-Hosted network integration can be run against the finalized current contract address listed above.
+Hosted network integration can be run against the finalized current contract address listed above (`0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488`).

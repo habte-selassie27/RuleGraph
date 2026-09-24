@@ -6,7 +6,7 @@ Standalone GenLayer Intelligent Contract.
 
 No frontend. No backend. No off-chain database. The Intelligent Contract is the source of truth.
 
-The official StudioNet deployment is [`0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757`](https://explorer-studio.genlayer.com/address/0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757), from source commit `d63eb90585369597d7e66f143264c94254ff42ad`. [Open it in Studio](https://studio.genlayer.com/?import-contract=0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757).
+The official StudioNet deployment is [`0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488`](https://explorer-studio.genlayer.com/address/0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488), from source commit `d63eb90585369597d7e66f143264c94254ff42ad`. [Open it in Studio](https://studio.genlayer.com/?import-contract=0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488).
 Machine-readable lifecycle proof is recorded under `proof/` and linked from
 `DEPLOYMENT.md`. `proof/current-lifecycle.json` covers the current deployment; older lifecycle records are explicitly marked historical.
 
