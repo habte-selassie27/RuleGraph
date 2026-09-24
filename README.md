@@ -26,6 +26,51 @@ Current official StudioNet deployment: [`0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645
 [Open in Studio](https://studio.genlayer.com/?import-contract=0x3Cac4957D938f1Ac3E5924F5395e3bd5D0645488),
 deployed from source commit `d63eb90585369597d7e66f143264c94254ff42ad`. See the [deployment and sanitized proof records](DEPLOYMENT.md); current lifecycle evidence is tracked separately from historical evidence.
 
+## Live demo screenshots
+
+The screenshots below are captured from real GenLayer CLI sessions. The current-deployment images use the authoritative address above and show rulebook creation plus readback of the live rule graph. The historical images show a complete create/propose/prioritize/activate lifecycle on the previous verified deployment; they are retained as historical evidence and are not presented as transactions of the current deployment.
+
+### Current deployment
+
+<table>
+<tr>
+<td align="center"><img src="docs/images/current-create-rulebook.png" alt="Creating the current Treasury rulebook" width="720"><br><sub>Create rulebook on the current StudioNet deployment</sub></td>
+<td align="center"><img src="docs/images/current-rulebook-readback.png" alt="Reading the current rulebook" width="720"><br><sub>Current rulebook readback</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/images/current-rule-graph-relations.png" alt="Reading current rule graph relations" width="720"><br><sub>Current active graph relations readback</sub></td>
+<td align="center"><img src="docs/images/current-rule-graph-status.png" alt="Reading current rule graph status" width="720"><br><sub>Current rule graph status</sub></td>
+</tr>
+<tr>
+<td align="center" colspan="2"><img src="docs/images/current-rule-graph-hash.png" alt="Reading the current rule graph hash" width="720"><br><sub>Current rule graph hash</sub></td>
+</tr>
+</table>
+
+### Historical complete lifecycle demo
+
+<details>
+<summary>Show the previous deployment's completed lifecycle</summary>
+
+<table>
+<tr>
+<td align="center"><img src="docs/images/historical-create-rulebook.png" alt="Historical rulebook creation" width="720"><br><sub>Historical rulebook creation</sub></td>
+<td align="center"><img src="docs/images/historical-propose-rule.png" alt="Historical rule proposal" width="720"><br><sub>Historical rule proposal and consensus</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/images/historical-priority-update.png" alt="Historical blocked-rule priority update" width="720"><br><sub>Historical deterministic priority update</sub></td>
+<td align="center"><img src="docs/images/historical-activation.png" alt="Historical blocked-rule activation" width="720"><br><sub>Historical blocked-rule activation</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/images/historical-final-rulebook.png" alt="Historical final rulebook readback" width="720"><br><sub>Historical final rulebook readback</sub></td>
+<td align="center"><img src="docs/images/historical-relation-readback.png" alt="Historical relation readback" width="720"><br><sub>Historical relation readback</sub></td>
+</tr>
+<tr>
+<td align="center" colspan="2"><img src="docs/images/historical-consistency-check.png" alt="Historical consistency check" width="720"><br><sub>Historical consistency check</sub></td>
+</tr>
+</table>
+
+</details>
+
 ## Why this primitive exists
 
 Traditional smart contracts are excellent when rules are already formalized. They are less useful when the authoritative rules are written in natural language and two questions must be answered before deterministic execution can proceed:
