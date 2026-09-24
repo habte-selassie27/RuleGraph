@@ -19,8 +19,9 @@ recorded here so the deployment can be independently audited.
 | Deployment receipt | `FINALIZED`, `MAJORITY_AGREE`; execution `SUCCESS` |
 
 The deployment schema was verified through the CLI, and the deployment transaction is finalized on StudioNet. The CLI returned the contract address above; block number and gas values are not included because they were not independently captured.
-Previous deployments `0x67a027446838296FcB3022B376c8ff3873a4566C`
-(commit `bd6682d...`) and `0xf529EDf5291B7fB78f0ba3922b9162A593972020`
+Previous deployments `0xfA6284e0728A80C80E213eA429aFD800BC1F5E69`,
+`0x6C251947a2b08F8b550b17a17082e2c3e2378136`, `0x67a027446838296FcB3022B376c8ff3873a4566C`
+(commit `bd6682d...`), and `0xf529EDf5291B7fB78f0ba3922b9162A593972020`
 are historical because the contract source changed after those deployments.
 
 ## Requirements
@@ -94,7 +95,7 @@ The current contract has a finalized deployment and a partial observed lifecycle
 
 ## Historical lifecycle evidence (previous deployment)
 
-The complete lifecycle table below is retained historical evidence for the previous deployment at `0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757`. Its transaction hashes remain associated with that contract.
+The complete lifecycle table below is retained historical evidence for the previous deployment at `0xfA6284e0728A80C80E213eA429aFD800BC1F5E69`. Its transaction hashes remain associated with that contract.
 
 | Operation | Transaction | Observed result |
 |---|---|---|

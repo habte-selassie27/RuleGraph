@@ -1,9 +1,9 @@
 {
   "historical": true,
-  "historical_contract": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "historical_contract": "0xfA6284e0728A80C80E213eA429aFD800BC1F5E69",
   "historical_note": "Lifecycle evidence belongs to the previous deployment and must not be associated with the current contract.",
-  "source_commit": "d63eb90585369597d7e66f143264c94254ff42ad",
-  "contract_address": "0x521C5093b2Fb6fE8c282B9BD7E13d57f5f268757",
+  "source_commit": "60aa7005d4d38a19994629e297eccdde9c969c92",
+  "contract_address": "0xfA6284e0728A80C80E213eA429aFD800BC1F5E69",
   "tx_hash": "0xf6ab8cfa8e984d1c28a8b54977a495d7372e9649b7a8fe28e064a624705a5d9b",
   "status": "FINALIZED",
   "result": "MAJORITY_AGREE",
