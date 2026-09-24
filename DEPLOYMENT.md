@@ -74,7 +74,7 @@ CLI version: <version>
 
 ## Runtime smoke sequence
 
-After deployment, use the Studio or CLI to execute the lifecycle in `examples/treasury_rulebook.md`.
+After deployment, use the Studio or CLI to execute a representative lifecycle smoke test.
 
 Minimum proof should include:
 

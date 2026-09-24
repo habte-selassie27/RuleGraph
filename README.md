@@ -273,7 +273,6 @@ docs/ARCHITECTURE.md
 docs/CONSENSUS.md
 docs/INTEGRATION.md
 docs/THREAT_MODEL.md
-examples/treasury_rulebook.md
 SUBMISSION.md
 DEPLOYMENT.md
 ```
